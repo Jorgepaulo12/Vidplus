@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+</head>
+<body>
+    <h1>Playlist</h1>
+    <form action="/download_playlist" method="post">
+        {% for video in videos %}
+        <div>
+            <input type="radio" id="{{ video['id'] }}" name="video_index" value="{{ video['id'] }}">
+            <label for="{{ video['id'] }}">{{ video['title'] }}</label>
+            <br>
+            <img src="{{ video['thumbnail'] }}" alt="Thumbnail">
+        </div>
+        {% endfor %}
+        <select name="format">
+            <option value="video">VÃ­deo</option>
+            <option value="audio">Ãudio</option>
+        </select>
+        <input type="hidden" name="playlist_url" value="{{ playlist_url }}">
+        <input type="submit" value="Baixar VÃ­deo Selecionado">
+    </form>
+    <br>
+    <a href="/">Voltar</a>
+</body>
+</html>
