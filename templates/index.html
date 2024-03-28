@@ -3,234 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VidPlus</title>
-    <style>
-        body{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-        padding: 0;
-        margin: 0;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #06b9f5;
-            color: white;
-            height: 60px;
-            
-           
-           
-        }
-
-        .nav-logo {
-            font-size: 24px;
-            font-weight: bold;
-            padding: 10px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-link {
-            padding: 10px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .nav-link:hover {
-            background-color: #555;
-        }
-
-        .burger {
-            display: none;
-            cursor: pointer;
-        }
-
-        .burger div {
-            width: 25px;
-            height: 3px;
-            background-color: white;
-            margin: 5px;
-        }
-
-        .search {
-            display: flex;
-            align-items: center;
-            margin: 20px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .search-button {
-            padding: 10px;
-            border: none;
-            background-color: #06b9f5;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-button:hover {
-            background-color: #0d4ff6;
-        }
-
-        .videos {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 20px;
-            margin: 20px;
-        }
-
-        .video {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .video-thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .video-title {
-            margin: 10px;
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-            text-decoration: none;
-        }
-
-        .quality-select {
-            margin-top: 10px;
-        }
-
-        .quality-select select {
-            padding: 5px;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .quality-select button {
-            margin-top: 5px;
-            padding: 10px;
-            border: none;
-            background-color: #06b9f5;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .quality-select button:hover {
-            background-color: #555;
-        }
-
-        @media screen and (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                right: 0;
-                height: 100vh;
-                width: 50%;
-                background-color: #333;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                transform: translateX(100%);
-                transition: transform 0.5s ease-in;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links.active {
-                transform: translateX(0%);
-            }
-
-            .burger {
-                display: block;
-            }
-        }
-
-        @media screen and (max-width: 576px) {
-            .videos {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <title>GPT-J Flask App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <nav class="nav">
-        <div class="nav-logo">VidPlus</div>
-        <ul class="nav-links">
-            <li><a href="/" class="nav-link">painel</a></li>
-            <li><a href="#" class="nav-link">sobre</a></li>
-            <li><a href="#" class="nav-link">Contacto</a></li>
-        </ul>
-        <div class="burger">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </nav>
-    <div class="search">
-        <form action="/process" method="POST">
-            <input type="text" class="search-input" name="query" placeholder="Pesquisar ou link">
-            <button class="search-button" type="submit">Pesquisar</button>
+    <div class="container mt-5">
+        <h1 class="mb-4">GPT-J Flask App</h1>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="input_text" class="form-label">Digite seu texto aqui:</label>
+                <textarea class="form-control" id="input_text" name="input_text" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gerar Texto</button>
         </form>
-    </div>
-    <div class="videos">
-        {% if videos %}
-            {% for video in videos %}
-                <div class="video">
-                    <img src="{{ video.thumbnail }}" class="video-thumbnail" alt="Thumbnail">
-                    <a href="#" class="video-title">{{ video.title }}</a>
-                    <div class="quality-select">
-                        <form action="/download" method="post">
-                            <input type="hidden" name="url" value="{{ video.url }}">
-                            <input type="hidden" name="title" value="{{ video.title }}">
-                            <select name="quality">
-                                <option value="video_best">Melhor qualidade de video</option>
-                                <option value="video_worst">Pior qualidade de video</option>
-                                <option value="audio_best">Melhor qualidade de audio</option>
-                                <option value="audio_worst">Pior qualidade de audio</option>
-                                <option value="both_best">Melhor qualidade de video e audio</option>
-                                <option value="both_worst">Pior qualidade de audio</option>
-                            </select>
-                            <button type="submit">Baixar</button>
-                        </form>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No videos found.</p>
+        {% if generated_text %}
+        <div class="mt-4">
+            <h3>Texto Gerado:</h3>
+            <p>{{ generated_text }}</p>
+        </div>
         {% endif %}
     </div>
-</div>
-<script>
-    const burger = document.querySelector('.burger');
-    const navLinks = document.querySelector('.nav-links');
-
-    burger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-</script>
 </body>
 </html>
-
